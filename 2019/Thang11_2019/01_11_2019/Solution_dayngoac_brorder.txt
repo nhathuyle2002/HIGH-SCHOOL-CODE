@@ -1,0 +1,9 @@
+/*
+	a<=b;
+    Xét dãy s? g?m a s? 1 và b s? -1, tim s? dãy th?a mãn
+    t?i m?i v? trí i thì t?ng dãy t? 1->i >= a-b.
+
+    S? dãy có a s? 1 và b s? -1 : (a+b)C(a);
+    S? dãy có a s? 1 và b s? -1 ko th?a mãn : (a+b)C(a-1) v?i (a<=b)// t? suy không hi?u
+    Ngu?n : catalan numbers https://brilliant.org/wiki/catalan-numbers/
+*/

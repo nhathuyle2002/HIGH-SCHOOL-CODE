@@ -1,0 +1,84 @@
+Type    point= record i,j:longint; end;
+
+Const   ginp='labyrinth.inp';
+        gout='labyrinth.out';
+        maxn=1001;
+        di:array[1..4] of longint= (-1,1,0,0);
+        dj:array[1..4] of longint= (0,0,-1,1);
+        rr:array[1..4] of char =('N','S','W','E');
+
+Var     m,n,l,r:longint;
+        a:array[0..maxn] of ansistring;
+        q:array[0..maxn*maxn] of point;
+        trace:array[0..maxn,0..maxn] of longint;
+        res:ansistring;
+
+Procedure Enter;
+Var     i,j:longint;
+Begin
+        fillchar(trace,sizeof(trace),0);
+        l:=0; r:=1;
+        readln(m,n);
+        for i:=1 to m do
+        begin
+                readln(a[i]);
+                for j:=1 to n do
+                        if a[i,j]='*' then
+                        begin
+                                trace[i,j]:=-1;
+                                q[1].i:=i; q[1].j:=j;
+                        end;
+        end;
+End;
+
+Function Check(i,j:longint):boolean;
+Begin
+        if (i<1) or (i>m) or (j<1) or (j>n) then exit(false);
+        if (trace[i,j]<>0) or (a[i,j]='#') then exit(false);
+        exit(true);
+End;
+
+Procedure Try(i,j:longint);
+Begin
+        if trace[i,j]=-1 then exit;
+        res:=rr[trace[i,j]]+res;
+        try(i-di[trace[i,j]], j-dj[trace[i,j]]);
+End;
+
+Procedure Process;
+Var     k,i0,j0:longint;
+Begin
+        repeat
+                inc(l);
+                if (q[l].i=1) or (q[l].i=m) or (q[l].j=1) or (q[l].j=n) then
+                begin
+                        res:='';
+                        try(q[l].i,q[l].j);
+                        writeln(res);
+                        break;
+                end;
+                for k:=1 to 4 do
+                begin
+                        i0:=q[l].i+di[k]; j0:=q[l].j+dj[k];
+                        if check(i0,j0) then
+                        begin
+                                trace[i0,j0]:=k;
+                                inc(r);
+                                q[r].i:=i0; q[r].j:=j0;
+                        end;
+                end;
+                if l>=r then
+                begin
+                        write(-1);
+                        break;
+                end;
+        until false;
+End;
+
+Begin
+        Assign(input,ginp); Assign(output,gout);
+        Reset(input); Rewrite(output);
+        Enter;
+        Process;
+        Close(input); Close(output);
+End.
